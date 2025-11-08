@@ -149,8 +149,8 @@ details summary {
     cursor: pointer;
     font-weight: bold;
     padding: 0.25rem;
-    background: #eee;
-    border-radius: 0.25rem;
+    background: #57bcb814;
+    border-radius: 1.25rem;
 }
 .grade {
     display: inline-block;
