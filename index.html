@@ -185,13 +185,14 @@
           <details open>
             <summary>Proportions</summary>
           <section class="controls-section" id="section-custom-cut-section">
-            
+
 
             <div class="controls-list">
               <div class="control" id="control-custom-cut-crown-height-range-id">
                 <label>Crown height:</label>
                 <div class="range-container">
                   <input type="range" min="0" max="0.2" value="0.152" step="0.002" class="slider" id="custom-cut-crown-height-range-id">
+
                   <div class="range-skin-container">
                     <div class="range-stub">
                       <span class="range-bar range-bar-left range-stub-left"></span>
@@ -209,9 +210,17 @@
                     <div class="range-stub">
                       <span class="range-bar range-bar-right range-stub-right"></span>
                     </div>
+
                   </div>
                 </div>
+                <span class="grade" id="gradeCrownHeight" style="padding-left:8px;"></span>
               </div>
+                                            <!-- New crown angle readout (placed under Crown height control) -->
+  <div class="control">
+    <label style="display:inline-block">Crown angle:</label>
+    <span id="custom-cut-crown-angle-value-id" class="range-container">—</span>
+    <span class="grade" id="gradeCrownAngle" style="padding-left:8px;"></span>
+  </div>
               <div class="control" id="control-custom-cut-crown-table-range-id">
                 <label>Crown table:</label>
                 <div class="range-container">
@@ -235,6 +244,7 @@
                     </div>
                   </div>
                 </div>
+                <span class="grade" id="gradeCrownTable" style="padding-left:8px;"></span>
               </div>
               <div class="control" id="control-custom-cut-crown-ratio-range-id">
                 <label>Crown ratio:</label>
@@ -259,6 +269,7 @@
                     </div>
                   </div>
                 </div>
+                <span class="grade" id="gradeCrownRatio" style="padding-left:8px;"></span>
               </div>
               <div class="control" id="control-custom-cut-girdle-thickness-range-id">
                 <label>Girdle thickness:</label>
@@ -283,6 +294,7 @@
                     </div>
                   </div>
                 </div>
+                <span class="grade" id="gradeGirdleThickness" style="padding-left:8px;"></span>
               </div>
               <div class="control" id="control-custom-cut-girdle-roundness-range-id">
                 <label>Girdle roundness:</label>
@@ -331,7 +343,20 @@
                     </div>
                   </div>
                 </div>
+                <span class="grade" id="gradePavillionHeight" style="padding-left:8px;"></span>
               </div>
+              <!-- Add these output-only controls under pavilion controls (no sliders) -->
+<div class="control" id="control-custom-cut-pavillion-angle-output-id">
+  <label>Pavilion angle:</label>
+      <span id="custom-cut-pavillion-angle-output-id" class="range-container">—</span>
+      <span class="grade" id="gradePavillionAngle" style="padding-left:8px;"></span>
+</div>
+
+<div class="control" id="control-custom-cut-total-depth-output-id">
+  <label>Total depth:</label>
+      <span id="custom-cut-total-depth-output-id" class="range-container">—</span>
+      <span class="grade" id="gradeTotalDepth" style="padding-left:8px;"></span>
+</div>
               <div class="control" id="control-custom-cut-pavillion-ratio-range-id">
                 <label>Pavillion ratio:</label>
                 <div class="range-container">
@@ -355,7 +380,10 @@
                     </div>
                   </div>
                 </div>
+                <span class="grade" id="gradePavillionRatio" style="padding-left:8px;"></span>
               </div>
+              <!-- Final grade display -->
+<div id="finalGrade" style="margin-top:12px; font-weight:bold; font-size:16px;"></div>
             </div>
           </section>
           </details>
@@ -577,15 +605,9 @@
         </div>
       </div>
     </main>
-    <script type="text/javascript">
-      var Page = Page || {};
-      Object.defineProperty(Page, "version", {
-        value: "2024-01-15T21%3A01%3A16.058Z",
-        writable: false,
-      });
-    </script>
-    <script src="script/page.min.js?v=2024-01-15T21%3A01%3A16.058Z"></script>
-    <script src="script/main.min.js?v=2024-01-15T21%3A01%3A16.058Z"></script>
+    <script src="script/page.min.js"></script>
+    <script src="script/main.min.js"></script>
+    <script src="script/custom-control.js"></script>
   </body>
 
 </html>
