@@ -7,11 +7,48 @@
     <title>Diamond</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
     <link rel="stylesheet" type="text/css" href="css/page.css?v=2024-01-15T21%3A01%3A16.058Z">
+    <style>
+      /* Custom Slider Styling for "Square with curved corners and value inside" */
+      
+      /* Hide the original handle dot */
+      .range-skin-container .range-handle {
+          display: none !important;
+      }
+
+      /* Style the tooltip to act as the new handle */
+      .range-skin-container .range-tooltip {
+          display: flex !important;
+          align-items: center;
+          justify-content: center;
+          min-width: 32px;
+          height: 24px;
+          padding: 0 4px;
+          background: #444; /* Dark grey background */
+          color: #fff;      /* White text */
+          border-radius: 6px; /* Curved corners */
+          font-size: 11px;
+          font-weight: bold;
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translate(50%, -50%); /* Center on the progress end */
+          z-index: 10;
+          pointer-events: none; /* Allow clicks to pass through to input */
+          box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+          opacity: 1 !important; /* Ensure visibility */
+          visibility: visible !important;
+      }
+
+      /* Ensure the input is on top to capture drags */
+      .range-container input[type="range"] {
+          z-index: 20;
+          cursor: grab;
+      }
+      .range-container input[type="range"]:active {
+          cursor: grabbing;
+      }
+    </style>
   </head>
 
   <body>
@@ -80,6 +117,7 @@
                   <input type="radio" name="gem-cut-picker-id" value="step_cut.obj" data-label="Step cut">
                   <input type="radio" name="gem-cut-picker-id" value="brilliant_cut_triangle.obj" data-label="Brilliant cut triangle">
                   <input type="radio" name="gem-cut-picker-id" value="oval_cut.obj" data-label="Oval">
+                  <input type="radio" name="gem-cut-picker-id" value="RB.obj" data-label="Test">
                 </div>
               </div>
               <div class="control" id="control-refraction-range-id">
@@ -274,7 +312,7 @@
               <div class="control" id="control-custom-cut-girdle-thickness-range-id">
                 <label>Girdle thickness:</label>
                 <div class="range-container">
-                  <input type="range" min="0" max="0.18" value="0.018" step="0.001" class="slider" id="custom-cut-girdle-thickness-range-id">
+                  <input type="range" min="0" max="0.18" value="0.038" step="0.001" class="slider" id="custom-cut-girdle-thickness-range-id">
                   <div class="range-skin-container">
                     <div class="range-stub">
                       <span class="range-bar range-bar-left range-stub-left"></span>
@@ -608,6 +646,7 @@
     <script src="script/page.min.js"></script>
     <script src="script/main.min.js"></script>
     <script src="script/custom-control.js"></script>
+    <script src="script/slider-mechanism.js"></script>
   </body>
 
 </html>
