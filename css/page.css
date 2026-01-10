@@ -153,11 +153,12 @@ details summary {
     border-radius: 1.25rem;
 }
 .grade {
+    min-width: 2em;
     display: inline-block;
     font-weight: bold;
     font-size: 0.9em;
     padding-left: 6px;
-    transition: color 0.25s ease, transform 0.25s ease;
+    transition: color 1.25s ease, transform 1.25s ease;
 }
 
 .grade.updated {
@@ -171,7 +172,7 @@ details summary {
     font-size: 1.1em;
     font-weight: bold;
     text-align: center;
-    transition: color 0.3s ease, transform 0.3s ease;
+    transition: color 1.3s ease, transform 1.3s ease;
 }
 
 #finalGrade.updated {
@@ -803,9 +804,6 @@ details summary {
     top: -28px;
     right: 0;
     min-width: 24px;
-    padding: 4px;
-    transform: translateX(50%);
-    transition: opacity 0.1s ease-in-out;
     border-radius: 4px;
     background: #535353;
     color: #eee;
@@ -828,18 +826,7 @@ details summary {
     .range-tooltip {
     opacity: 1;
 }
-.range-container .range-tooltip::after {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    width: 0px;
-    height: 12px;
-    margin-left: -6px;
-    border-width: 6px;
-    border-style: solid;
-    border-color: #535353 rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
-    content: "";
-}
+
 .color-picker-container {
     position: relative;
 }
