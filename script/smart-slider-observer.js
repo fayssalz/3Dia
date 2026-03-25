@@ -1,55 +1,69 @@
 (function() {
-    // This script intercepts Page.Range.addObserver to implement conditional lazy updates.
-    // It must be loaded AFTER page.min.js and BEFORE main.min.js.
+    // This script intercepts Page.Range.addObserver for Custom Cut sliders
+    // to enable LIVE rendering during drag with a time-based debounce.
+    // This avoids hammering the GPU with shader recompilations.
 
     if (typeof Page === 'undefined' || !Page.Range) {
-        console.error("Page.Range not found. Ensure page.min.js is loaded before smart-slider-observer.js");
+        console.error("Page.Range not found.");
         return;
     }
 
     const originalAddObserver = Page.Range.addObserver;
-    const originalAddLazyObserver = Page.Range.addLazyObserver;
-    const GEOMETRY_ONLY_CHECKBOX_ID = "only-normals-checkbox-id";
+    
+    // Debounce interval (ms) — limits rebuilds to ~12/sec during drag.
+    // Tuned for smooth feel without overwhelming the GPU shader compiler.
+    const DEBOUNCE_MS = 8;
+
+    const paramMap = {
+        'custom-cut-crown-height-range-id': 'customCutCrownHeight',
+        'custom-cut-crown-table-range-id': 'customCutCrownTable',
+        'custom-cut-crown-ratio-range-id': 'customCutCrownRatio',
+        'custom-cut-girdle-thickness-range-id': 'customCutGirdleThickness',
+        'custom-cut-girdle-roundness-range-id': 'customCutGirdleRoundess',
+        'custom-cut-pavillion-height-range-id': 'customCutPavillionHeight',
+        'custom-cut-pavillion-ratio-range-id': 'customCutPavillionRati'
+    };
+
+    // Shared debounce timer across all custom-cut sliders
+    let debounceTimer = null;
+    let latestCallback = null;
+    let latestValue = 0;
 
     // Override the addObserver function
     Page.Range.addObserver = function(elementId, callback) {
-        // Check if the slider is one of the custom cut controls
-        if (elementId && elementId.indexOf('custom-cut') !== -1) {
+        
+        // If it's a "Custom Cut" slider, use live rendering with debounce
+        if (paramMap[elementId]) {
+            const slider = document.getElementById(elementId);
             
-            // Wrapper for the 'input' event (continuous update during drag)
-            const inputWrapper = function(value) {
-                let isGeometryOnly = false;
-                try {
-                    isGeometryOnly = Page.Checkbox.isChecked(GEOMETRY_ONLY_CHECKBOX_ID);
-                } catch (e) {
-                    // Ignore errors if checkbox is missing or not initialized
-                }
+            if (slider) {
+                // INPUT event (DRAG) — debounced rebuild
+                slider.addEventListener('input', function() {
+                    latestCallback = callback;
+                    latestValue = parseFloat(this.value);
 
-                // Only update continuously if "Geometry only" is checked (fast rendering)
-                if (isGeometryOnly) {
-                    callback(value);
-                }
-            };
+                    // Reset the debounce timer on each input
+                    if (debounceTimer !== null) {
+                        clearTimeout(debounceTimer);
+                    }
+                    debounceTimer = setTimeout(function() {
+                        debounceTimer = null;
+                        latestCallback(latestValue);
+                    }, DEBOUNCE_MS);
+                });
 
-            // Wrapper for the 'change' event (update on release)
-            const changeWrapper = function(value) {
-                let isGeometryOnly = false;
-                try {
-                    isGeometryOnly = Page.Checkbox.isChecked(GEOMETRY_ONLY_CHECKBOX_ID);
-                } catch (e) {}
-
-                // Update on release if "Geometry only" is NOT checked (slow rendering)
-                if (!isGeometryOnly) {
-                    callback(value);
-                }
-            };
-
-            // Register the wrappers
-            originalAddObserver(elementId, inputWrapper);
-            originalAddLazyObserver(elementId, changeWrapper);
-
+                // CHANGE event (DROP) — immediate final flush
+                slider.addEventListener('change', function() {
+                    // Cancel any pending debounce
+                    if (debounceTimer !== null) {
+                        clearTimeout(debounceTimer);
+                        debounceTimer = null;
+                    }
+                    callback(parseFloat(this.value));
+                });
+            }
         } else {
-            // For all other sliders, use the default behavior
+            // Standard behavior for other sliders
             originalAddObserver(elementId, callback);
         }
     };
